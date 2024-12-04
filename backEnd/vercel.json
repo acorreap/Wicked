@@ -1,9 +1,5 @@
 {
-	"version": 2,
-	"public": false,
-	"builds": [{ "src": "src/main.py", "use": "@vercel/python" }],
-	"routes": [
-		{ "src": "/src", "dest": "main.py" }
-
-	]
+    "rewrites": {
+        { "source": "/(.*)", "destination": "/"}
+    }
 }
