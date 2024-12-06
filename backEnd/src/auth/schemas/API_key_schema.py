@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from ..models.API_key_model import ApiKeyModel
+from bson import ObjectId
 
 class ApiKeySchema(BaseModel):
     id: str = Field(..., description = "ID de la api key en la base de datos")
@@ -14,10 +15,20 @@ class ApiKeySchema(BaseModel):
        return cls(
            id = str(model.id) if with_id and model.id else None,
            api_key_hashed = model.api_key_hashed,
-           create_date = str(model.create_date),
-           expiration_date = str(model.expiration_date),
+           create_date = str(model.create_date.isoformat()),
+           expiration_date = str(model.expiration_date.isoformat()),
            active = model.active
        )
+    
+    @classmethod
+    def to_model(self) -> ApiKeyModel:
+        return ApiKeyModel(
+            id=ObjectId(self.id) if self.id else None,  # Convierte `id` a ObjectId si es necesario
+            api_key_hashed=self.api_key_hashed,
+            create_date=datetime.fromisoformat(self.create_date),  # Convierte de ISO 8601 a datetime
+            expiration_date=datetime.fromisoformat(self.expiration_date),  # Convierte de ISO 8601 a datetime
+            active=self.active,
+        )
     
     class Config:
         arbitrary_types_allowed = True

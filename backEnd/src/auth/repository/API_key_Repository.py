@@ -2,8 +2,10 @@ import json
 from typing import Optional, List
 from datetime import datetime
 from ..schemas.API_key_schema import ApiKeySchema
+from ..models.API_key_model import ApiKeyModel
 from pathlib import Path
-
+from bson import ObjectId
+from ...core.crypto import manager
 
 class ApiKeyRepository:
     def __init__(self, db_path: str = "data/apikeys.json"):
@@ -36,15 +38,33 @@ class ApiKeyRepository:
         self._write_db(data)
         return api_key
 
-    def get_by_id(self, api_key_id: str) -> Optional[ApiKeySchema]:
-        """
-        Busca una API Key por su ID.
-        """
+
+    def get_by_id(self, api_key_id: str) -> Optional[ApiKeyModel]:
         data = self._read_db()
         for record in data:
-            if record["_id"] == api_key_id:
-                return ApiKeySchema(**record)
+            if record.get("_id") == api_key_id:  # Asegúrate de usar `_id`
+                record["id"] = record["_id"]  # Mapea `_id` a `id`
+                return ApiKeyModel(**record)
         return None
+
+    def get_by_raw_key(self, raw_api_key: str) -> Optional[ApiKeyModel]:
+        """
+        Busca una API Key en la base de datos simulada utilizando la clave sin hashear.
+        """
+        data = self._read_db()
+
+        for record in data:
+            # Mapea el campo `id` a `_id` para que coincida con el modelo de MongoDB
+            if "id" in record:
+                record["_id"] = record.pop("id")
+
+            # Valida si el raw_api_key coincide con el hash almacenado
+            if manager.verify_data(raw_api_key, record.get("api_key_hashed", "")):
+                return ApiKeyModel(**record)
+
+        # Retorna None si no se encuentra la clave
+        return None
+
 
     def get_all(self) -> List[ApiKeySchema]:
         """

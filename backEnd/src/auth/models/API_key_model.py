@@ -6,12 +6,12 @@ from bson import ObjectId
 
 class ApiKeyModel:
 
-    def __init__(self, _id: Optional[ObjectId] = None, api_key_hashed: str = "", expiration_date: Optional[datetime] = None):
+    def __init__(self, _id: Optional[ObjectId] = None, api_key_hashed: str = "", create_date: Optional[datetime]= None, expiration_date: Optional[datetime] = None, active: Optional[bool] = None):
         self._id = _id or ObjectId()  # Genera un ObjectId único si no se proporciona
         self.api_key_hashed = api_key_hashed
-        self.create_date = datetime.now()
+        self.create_date = create_date or datetime.now()
         self.expiration_date = expiration_date or (datetime.now() + timedelta(days=30))
-        self.active = True
+        self.active = active if active is not None else True
     
     @property
     def id(self):
@@ -19,13 +19,16 @@ class ApiKeyModel:
 
     # Setter para __id
     @id.setter
-    def id(self, value):
-        if not isinstance(value, str):
-            raise ValueError("El ID debe ser una cadena.")
-        self._id = value
+    def id(self, value: str):
+        """
+        Setter para el ID, convierte un string a ObjectId si es necesario.
+        """
+        if not ObjectId.is_valid(value):
+            raise ValueError("El ID debe ser un ObjectId válido o una cadena representativa.")
+        self._id = ObjectId(value)
 
     @classmethod
-    def generate(cls, validity_period_days: int = 30) -> "ApiKeyModel":
+    def generate(cls, validity_period_days: int = 30) -> tuple["ApiKeyModel", str]:
         """
         Genera una nueva API Key con un período de validez especificado.
         """

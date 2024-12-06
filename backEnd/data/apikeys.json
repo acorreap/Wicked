@@ -19,5 +19,33 @@
         "create_date": "2024-12-06 14:54:07.769841",
         "expiration_date": "2025-03-06 14:54:07.769841",
         "active": true
+    },
+    {
+        "id": "675388e8f285d226c53d497f",
+        "api_key_hashed": "$2b$12$uuG1k4753knkbhtUMA1GpOHd/20vQ.Na/4nEcNOrDLWlw7r5FYSyS",
+        "create_date": "2024-12-06T20:29:44.378781",
+        "expiration_date": "2025-03-06T20:29:44.378781",
+        "active": true
+    },
+    {
+        "id": "67538e5090828c982a3d6fc7",
+        "api_key_hashed": "$2b$12$VBS3GAECSkSWxvqIBLel4.raqRPk1vnL8olYt3F4hm8JejsQtIfqC",
+        "create_date": "2024-12-06T20:52:48.529213",
+        "expiration_date": "2025-03-06T20:52:48.529213",
+        "active": true
+    },
+    {
+        "id": "67538f578c407a0a213a3992",
+        "api_key_hashed": "$2b$12$Ta44AOqqiG7NIhdoUUE5COp48YyJ5.VXTx7JSOhPnerfH3h1mbBB6",
+        "create_date": "2024-12-06T20:57:11.325253",
+        "expiration_date": "2025-03-06T20:57:11.325253",
+        "active": true
+    },
+    {
+        "id": "67538fc48c407a0a213a3993",
+        "api_key_hashed": "$2b$12$t7pToWcMTQRBta.U7oQIOePTGqAsoEZjNJJRGZ/6cZVLTAACB6RMO",
+        "create_date": "2024-12-06T20:59:00.900853",
+        "expiration_date": "2025-03-06T20:59:00.900853",
+        "active": true
     }
 ]

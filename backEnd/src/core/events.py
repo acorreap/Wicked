@@ -20,13 +20,7 @@ def shutdown_event():
         db_client.close()
         logger.info("Conexión a la base de datos cerrada.")
 
-@contextmanager
-def get_db():
-    from ..core.events import get_client  # Accede al cliente global
-    db_client = get_client()
-    if not db_client:
-        raise Exception("La conexión a la base de datos no está disponible.")
-    try:
-        yield db_client
-    finally:
-        pass  # Aquí puedes manejar la lógica de limpieza si es necesario
+def get_client():
+    global db_client
+    
+    return db_client

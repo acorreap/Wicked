@@ -1,6 +1,7 @@
 from ..repository.API_key_Repository import ApiKeyRepository
 from ..models.API_key_model import ApiKeyModel
 from ..schemas.API_key_schema import ApiKeySchema
+from ...core.crypto import manager
 class ApiKeyService():
     def __init__(self):
         self.api_key_repository = ApiKeyRepository()
@@ -16,3 +17,11 @@ class ApiKeyService():
             "api_key_hashed": api_key_model.api_key_hashed,
             "expiration_date": api_key_model.expiration_date,
         }
+    
+    def valid_api_key(self, api_key_schema_id: str):
+        api_key_model = self.api_key_repository.get_by_raw_key(api_key_schema_id)
+
+        if not api_key_model:
+            return False
+        
+        return True, str(api_key_model.api_key_hashed)
